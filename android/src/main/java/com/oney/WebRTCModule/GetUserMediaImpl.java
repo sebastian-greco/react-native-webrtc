@@ -16,6 +16,9 @@ import java.util.UUID;
 
 import org.webrtc.*;
 
+import com.relywisdom.usbwebrtc.UsbCameraEnumerator;
+
+
 /**
  * The implementation of {@code getUserMedia} extracted into a separate file in
  * order to reduce complexity and to (somewhat) separate concerns.
@@ -38,6 +41,8 @@ class GetUserMediaImpl {
 
     private final WebRTCModule webRTCModule;
 
+    private final boolean useUsb = true;
+
     GetUserMediaImpl(
             WebRTCModule webRTCModule,
             ReactApplicationContext reactContext) {
@@ -48,13 +53,19 @@ class GetUserMediaImpl {
         //   1. Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
         //   2. all camera support level should greater than LEGACY
         //   see: https://developer.android.com/reference/android/hardware/camera2/CameraCharacteristics.html#INFO_SUPPORTED_HARDWARE_LEVEL
-        if (Camera2Enumerator.isSupported(reactContext)) {
-            Log.d(TAG, "Creating video capturer using Camera2 API.");
-            cameraEnumerator = new Camera2Enumerator(reactContext);
+        if(this.useUsb) {
+            cameraEnumerator = new UsbCameraEnumerator(reactContext);
         } else {
-            Log.d(TAG, "Creating video capturer using Camera1 API.");
-            cameraEnumerator = new Camera1Enumerator(false);
+            if (Camera2Enumerator.isSupported(reactContext)) {
+                Log.d(TAG, "Creating video capturer using Camera2 API.");
+                cameraEnumerator = new Camera2Enumerator(reactContext);
+            } else {
+                Log.d(TAG, "Creating video capturer using Camera1 API.");
+                cameraEnumerator = new Camera1Enumerator(false);
+            }
         }
+
+
     }
 
     private AudioTrack createAudioTrack(ReadableMap constraints) {
@@ -119,6 +130,7 @@ class GetUserMediaImpl {
         audio.putString("label", "Audio");
         audio.putString("kind", "audioinput");
         array.pushMap(audio);
+
 
         return array;
     }
@@ -194,6 +206,8 @@ class GetUserMediaImpl {
             track_.putString("readyState", track.state().toString());
             track_.putBoolean("remote", false);
             tracks.pushMap(track_);
+
+            Log.d(TAG, "Created track : " + track.kind() + " state: " + track.state().toString());
         }
 
         Log.d(TAG, "MediaStream id: " + streamId);

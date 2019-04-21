@@ -96,6 +96,7 @@ public class VideoCaptureController {
             // XXX This can only fail if we initialize the capturer incorrectly,
             // which we don't. Thus, ignore any failures here since we trust
             // ourselves.
+            Log.d(TAG,"Error starting caputrer: " + e.getMessage());
         }
     }
 

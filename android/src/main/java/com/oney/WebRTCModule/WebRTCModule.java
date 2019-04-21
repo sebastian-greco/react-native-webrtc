@@ -1,5 +1,7 @@
 package com.oney.WebRTCModule;
 
+import android.content.Context;
+import android.hardware.usb.UsbManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseArray;
@@ -38,8 +40,13 @@ public class WebRTCModule extends ReactContextBaseJavaModule {
      */
     private GetUserMediaImpl getUserMediaImpl;
 
+    final UsbManager mUsbManager;
+
     public WebRTCModule(ReactApplicationContext reactContext) {
         super(reactContext);
+
+        mUsbManager = (UsbManager)reactContext.getSystemService(Context.USB_SERVICE);
+
 
         mPeerConnectionObservers = new SparseArray<>();
         localStreams = new HashMap<>();

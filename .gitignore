@@ -5,3 +5,16 @@ ios/RCTWebRTC.xcodeproj/xcuserdata
 ios/RCTWebRTC.xcodeproj/project.xcworkspace
 .DS_Store
 .idea
+.vscode
+android/.gradle
+android/gradle
+android/.idea
+android/gradlew*
+android/local.properties
+android/build
+android/gradle.properties
+android/.settings
+android/.project
+android/.classpath
+android/bin
+android/android.iml
