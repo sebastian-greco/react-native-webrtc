@@ -285,7 +285,7 @@ class GetUserMediaImpl {
          * @param track
          * @param mediaSource the {@code MediaSource} from which the specified
          * {@code code} was created
-         * @param videoCapturer the {@code VideoCapturer} from which the
+         * @param videoCaptureController the {@code VideoCapturer} from which the
          * specified {@code mediaSource} was created if the specified
          * {@code track} is a {@link VideoTrack}
          */

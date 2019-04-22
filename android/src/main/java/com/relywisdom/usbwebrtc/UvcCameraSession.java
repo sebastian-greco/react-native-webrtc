@@ -142,7 +142,7 @@ class UvcCameraSession implements UsbCameraSession {
 
     public static void create(CreateSessionCallback callback, Events events, Context applicationContext, SurfaceTextureHelper surfaceTextureHelper, MediaRecorder mediaRecorder, int width, int height, int framerate) {
         long constructionTimeNs = System.nanoTime();
-        Log.d(TAG, "Open usb camera ");
+        Log.d(TAG, "Open usb camera w:"+width+" h:"+height+" fps: "+framerate);
         events.onCameraOpening();
         CameraEnumerationAndroid.CaptureFormat captureFormat = findClosestCaptureFormat(width, height, framerate);
         UvcCameraSession current = new UvcCameraSession(events, applicationContext, surfaceTextureHelper, mediaRecorder, captureFormat, constructionTimeNs);
@@ -275,7 +275,7 @@ class UvcCameraSession implements UsbCameraSession {
                     //transformMatrix = RendererCommon.multiplyMatrices(transformMatrix, RendererCommon.horizontalFlipMatrix());
 
                     VideoFrame.Buffer buffer = UvcCameraSession.this.surfaceTextureHelper.createTextureBuffer(UvcCameraSession.this.captureFormat.width, UvcCameraSession.this.captureFormat.height, RendererCommon.convertMatrixToAndroidGraphicsMatrix(transformMatrix));
-                    VideoFrame frame = new VideoFrame(buffer, rotation, timestampNs);
+                    VideoFrame frame = new VideoFrame(buffer, 0, timestampNs);
                     UvcCameraSession.this.events.onFrameCaptured(UvcCameraSession.this, frame);
                     frame.release();
                 }
